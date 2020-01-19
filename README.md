@@ -1,11 +1,9 @@
-# PtScrawl 抓取历史热图
+# PtScrawl 
 
 ## 安装
 
 ```bash
-git clone https://gitlab.com/PtmindDev/ptengine/pt_scrapy.git
 
-cd pt_scrapy/ && npm install 
 ```
 
 ## 配置
