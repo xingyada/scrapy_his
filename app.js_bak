@@ -1,0 +1,93 @@
+const Koa = require('koa');
+const http = require('http');
+const Router = require('koa-router');
+const path = require('path');
+const Static = require('koa-static');
+const generateHistoryHeatmapFiles = require('./client');
+const app = new Koa();
+const router = new Router();
+// const EventEmitter = require('events').EventEmitter;
+
+// const event = new EventEmitter();
+
+router.get('/scrawl.pt', async ctx => {
+    // scrawl.start();
+    let {
+        url
+    } = ctx.request.query;
+
+    let message = 'url 参数不能为空';
+
+    if (url) {
+        message = generateHistoryHeatmapFiles(url);
+
+    }
+
+    ctx.body = message;
+});
+
+router.get('/', ctx => {
+
+    let host = ctx.request.host
+    let steps = `
+    <h1>操作步骤</h1>
+    <ul>
+        <li>
+            浏览器输入http://${host}/scrawl.pt?url=抓取的url
+        </li>
+        <li>
+            获取返回的32位代码
+        </li>
+        <li>
+            浏览器访问http://${host}/{步骤二中32位代码}/index.html 即可（注意：访问需要等待一段时间（1分钟左右）)
+        </li>
+    </ul>
+    
+    
+    `
+
+
+
+    ctx.body = steps;
+})
+
+
+
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+app.use(async (ctx, next) => {
+    // console.log(ctx.request.headers['referer']);
+    // let host = ctx.request.host;
+    let regEx = new RegExp(`^/[a-z0-9]{32}/index.html`);
+    let originPath = ctx.request.path;
+    let key = '';
+
+    // console.log(ctx.request.path);
+    if (regEx.test(ctx.request.path)) {
+        let r = /\/[a-z0-9]{32}\//.exec(ctx.request.path)
+        let md5_str = r[0].replace(/\//g, '');
+        ctx.cookies.set('key', md5_str);
+
+    } else {
+        key = ctx.cookies.get('key')||'';
+    }
+    if(ctx.request.path.indexOf(key)===-1){
+        ctx.request.path = `${key}${originPath}`;
+
+    }
+
+
+    await next();
+})
+app.use(Static(path.resolve(__dirname, './asserts')));
+
+
+
+
+
+
+app.listen(4000, () => {
+    console.log('scrawl server is running on port 5000');
+});

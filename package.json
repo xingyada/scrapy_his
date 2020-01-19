@@ -1,0 +1,29 @@
+{
+  "name": "pt_scrapy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pm2 start app.js --name pt-scrawl-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/PtmindDev/ptengine/pt_scrapy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.245.1",
+    "koa": "^2.5.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^4.0.3",
+    "md5": "^2.2.1",
+    "puppeteer": "^1.4.0",
+    "shelljs": "^0.8.2",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "pm2": "^2.10.4"
+  }
+}
