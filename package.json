@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.245.1",
+    "aws-sdk": "^2.814.0",
     "koa": "^2.5.1",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.3",
